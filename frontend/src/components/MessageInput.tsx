@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useAccount } from "wagmi";
 import { useCooldownRemaining, usePostMessage } from "../hooks/useWall";
 
@@ -26,7 +26,8 @@ export function MessageInput({ onPosted }: Props) {
   const overLimit = bytes > MAX_BYTES;
 
   const { data: cooldown, refetch: refetchCooldown } = useCooldownRemaining(address);
-  const { post, isPending, isConfirming, isSuccess, error } = usePostMessage();
+  const { post, hash, isPending, isConfirming, isSuccess, error } = usePostMessage();
+  const lastHandledHash = useRef<string | undefined>(undefined);
 
   // tick cooldown down every second
   const [tick, setTick] = useState(0);
@@ -47,8 +48,11 @@ export function MessageInput({ onPosted }: Props) {
   }, [refetchCooldown, onPosted]);
 
   useEffect(() => {
-    if (isSuccess) onSuccess();
-  }, [isSuccess, onSuccess]);
+    if (isSuccess && hash && hash !== lastHandledHash.current) {
+      lastHandledHash.current = hash;
+      onSuccess();
+    }
+  }, [isSuccess, hash, onSuccess]);
 
   const inCooldown = !!cooldown && cooldown > 0n;
   const canSubmit = isConnected && !overLimit && bytes > 0 && !inCooldown && !isPending && !isConfirming;

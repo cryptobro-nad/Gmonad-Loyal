@@ -42,5 +42,5 @@ export function usePostMessage() {
     });
   }
 
-  return { post, isPending, isConfirming, isSuccess, error };
+  return { post, hash, isPending, isConfirming, isSuccess, error };
 }
