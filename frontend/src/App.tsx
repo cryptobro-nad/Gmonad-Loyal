@@ -12,9 +12,18 @@ export function App() {
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <header className="border-b border-gray-800 bg-gray-900/60 backdrop-blur sticky top-0 z-10">
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center h-24 px-4 md:px-8">
+        {/* Mobile: stacked */}
+        <div className="flex flex-col items-center gap-2 py-3 md:hidden">
+          <h1 className="text-4xl font-extrabold tracking-tight text-center whitespace-nowrap">
+            <span className="text-white">Gmonad</span>
+            <span className="text-purple-400"> Wall</span>
+          </h1>
+          <WalletButton />
+        </div>
+        {/* Desktop: centered title, button pinned right */}
+        <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center h-24 px-4 md:px-8">
           <div />
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-center whitespace-nowrap">
+          <h1 className="text-6xl font-extrabold tracking-tight text-center whitespace-nowrap">
             <span className="text-white">Gmonad</span>
             <span className="text-purple-400"> Wall</span>
           </h1>
