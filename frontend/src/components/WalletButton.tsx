@@ -91,7 +91,7 @@ export function WalletButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium transition-colors"
+        className="whitespace-nowrap px-3 sm:px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs sm:text-sm font-medium transition-colors"
       >
         Connect Wallet
       </button>

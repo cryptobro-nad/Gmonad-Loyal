@@ -12,12 +12,13 @@ export function App() {
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <header className="border-b border-gray-800 bg-gray-900/60 backdrop-blur sticky top-0 z-10">
-        <div className="relative h-20 md:h-24 flex items-center justify-between md:justify-center px-4">
-          <h1 className="text-2xl md:text-5xl font-extrabold tracking-tight md:text-center">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center h-24 px-4 md:px-8">
+          <div />
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-center whitespace-nowrap">
             <span className="text-white">Gmonad</span>
             <span className="text-purple-400"> Wall</span>
           </h1>
-          <div className="md:absolute md:right-6 md:top-5">
+          <div className="justify-self-end max-w-full">
             <WalletButton />
           </div>
         </div>
