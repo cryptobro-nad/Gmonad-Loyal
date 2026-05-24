@@ -64,7 +64,7 @@ To learn the full dApp shipping flow on Monad Testnet — from writing and testi
 
 | Event | Emitted when |
 |---|---|
-| `MessagePosted(uint256 id, address author, string text, uint256 timestamp)` | A new message is posted |
+| `event MessagePosted(uint256 indexed id, address indexed author, uint256 timestamp)` | A new message is posted |
 | `MessageHidden(uint256 id, bool hidden)` | A message is shown or hidden by the owner |
 
 ### On-chain limits
