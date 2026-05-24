@@ -1,0 +1,99 @@
+import { useState, useEffect, useCallback } from "react";
+import { useAccount } from "wagmi";
+import { useCooldownRemaining, usePostMessage } from "../hooks/useWall";
+
+const MAX_BYTES = 120;
+
+function byteLength(str: string) {
+  return new TextEncoder().encode(str).length;
+}
+
+function formatCooldown(seconds: bigint) {
+  const s = Number(seconds);
+  const m = Math.floor(s / 60);
+  const rem = s % 60;
+  return m > 0 ? `${m}m ${rem}s` : `${s}s`;
+}
+
+interface Props {
+  onPosted: () => void;
+}
+
+export function MessageInput({ onPosted }: Props) {
+  const { address, isConnected } = useAccount();
+  const [text, setText] = useState("");
+  const bytes = byteLength(text);
+  const overLimit = bytes > MAX_BYTES;
+
+  const { data: cooldown, refetch: refetchCooldown } = useCooldownRemaining(address);
+  const { post, isPending, isConfirming, isSuccess, error } = usePostMessage();
+
+  // tick cooldown down every second
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    if (!cooldown || cooldown === 0n) return;
+    const id = setInterval(() => setTick((t) => t + 1), 1000);
+    return () => clearInterval(id);
+  }, [cooldown]);
+
+  useEffect(() => {
+    if (tick > 0) refetchCooldown();
+  }, [tick, refetchCooldown]);
+
+  const onSuccess = useCallback(() => {
+    setText("");
+    refetchCooldown();
+    onPosted();
+  }, [refetchCooldown, onPosted]);
+
+  useEffect(() => {
+    if (isSuccess) onSuccess();
+  }, [isSuccess, onSuccess]);
+
+  const inCooldown = !!cooldown && cooldown > 0n;
+  const canSubmit = isConnected && !overLimit && bytes > 0 && !inCooldown && !isPending && !isConfirming;
+
+  if (!isConnected) {
+    return (
+      <p className="text-center text-gray-500 py-6">Connect your wallet to post a message.</p>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="gm monad… (max 120 bytes)"
+        rows={3}
+        className="w-full rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 text-white placeholder-gray-500 p-3 resize-none outline-none transition-colors"
+      />
+      <div className="flex items-center justify-between gap-3">
+        <span className={`text-xs font-mono ${overLimit ? "text-red-400" : "text-gray-400"}`}>
+          {bytes} / {MAX_BYTES} bytes
+        </span>
+
+        <div className="flex items-center gap-3">
+          {inCooldown && (
+            <span className="text-xs text-yellow-400">
+              Cooldown: {formatCooldown(cooldown)}
+            </span>
+          )}
+          <button
+            onClick={() => post(text)}
+            disabled={!canSubmit}
+            className="px-5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {isPending || isConfirming ? "Posting…" : "Post"}
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <p className="text-xs text-red-400">
+          {(error as { shortMessage?: string }).shortMessage ?? error.message}
+        </p>
+      )}
+    </div>
+  );
+}
