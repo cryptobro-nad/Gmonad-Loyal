@@ -47,7 +47,7 @@ function WalletOption({ icon, name, subtitle, onClick, disabled }: WalletOptionP
 
 export function WalletButton() {
   const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
+  const { connect, connectors, error: connectError } = useConnect();
   const { disconnect } = useDisconnect();
   const [open, setOpen] = useState(false);
   const [injectedWallet, setInjectedWallet] = useState<WalletInfo | null>(null);
@@ -55,6 +55,11 @@ export function WalletButton() {
   useEffect(() => {
     setInjectedWallet(detectInjectedWallet());
   }, []);
+
+  // Close modal automatically once wallet connects successfully
+  useEffect(() => {
+    if (isConnected) setOpen(false);
+  }, [isConnected]);
 
   if (isConnected && address) {
     return (
@@ -75,7 +80,11 @@ export function WalletButton() {
 
   function handleConnect(connector: Connector) {
     connect({ connector });
-    setOpen(false);
+    // For WalletConnect, keep our modal open so the WC QR modal can overlay it
+    // and errors remain visible. For injected wallets close immediately.
+    if (connector.id !== "walletConnect") {
+      setOpen(false);
+    }
   }
 
   return (
@@ -105,6 +114,12 @@ export function WalletButton() {
                 ×
               </button>
             </div>
+
+            {connectError && (
+              <p className="text-red-400 text-xs mb-1 break-words">
+                {connectError.message}
+              </p>
+            )}
 
             <div className="flex flex-col gap-3">
               {injectedConnector ? (
