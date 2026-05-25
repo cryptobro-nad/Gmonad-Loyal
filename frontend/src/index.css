@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-image: radial-gradient(
+    ellipse 120% 40% at 50% -5%,
+    rgba(124, 58, 237, 0.07) 0%,
+    transparent 60%
+  );
+}

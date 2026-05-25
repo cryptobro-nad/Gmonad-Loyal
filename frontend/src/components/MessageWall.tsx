@@ -51,10 +51,16 @@ export function MessageWall({ refreshSignal }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {messages.map((msg) => (
-        <MessageCard key={msg.id.toString()} message={msg} />
-      ))}
+    <div className="flex flex-col gap-4">
+      <div>
+        <h2 className="text-lg font-bold text-white">Community Wall</h2>
+        <p className="text-xs text-gray-500 mt-0.5">Every message, permanently on Monad.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {messages.map((msg, i) => (
+          <MessageCard key={msg.id.toString()} message={msg} isNewest={i === 0} />
+        ))}
+      </div>
     </div>
   );
 }

@@ -70,7 +70,7 @@ export function MessageInput({ onPosted }: Props) {
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="gm monad… (max 120 bytes)"
+        placeholder="Write a short Gmonad message..."
         rows={3}
         className="w-full rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 text-white placeholder-gray-500 p-3 resize-none outline-none transition-colors"
       />
