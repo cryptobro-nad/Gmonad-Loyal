@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { useCooldownRemaining, usePostMessage } from "../hooks/useWall";
+import { monadTestnet } from "../wagmiConfig";
 
 const MAX_BYTES = 120;
 
@@ -21,6 +22,8 @@ interface Props {
 
 export function MessageInput({ onPosted }: Props) {
   const { address, isConnected } = useAccount();
+  const chainId = useChainId();
+  const onCorrectChain = chainId === monadTestnet.id;
   const [text, setText] = useState("");
   const bytes = byteLength(text);
   const overLimit = bytes > MAX_BYTES;
@@ -55,7 +58,7 @@ export function MessageInput({ onPosted }: Props) {
   }, [isSuccess, hash, onSuccess]);
 
   const inCooldown = !!cooldown && cooldown > 0n;
-  const canSubmit = isConnected && !overLimit && bytes > 0 && !inCooldown && !isPending && !isConfirming;
+  const canSubmit = isConnected && onCorrectChain && !overLimit && bytes > 0 && !inCooldown && !isPending && !isConfirming;
 
   if (!isConnected) {
     return (
@@ -92,6 +95,12 @@ export function MessageInput({ onPosted }: Props) {
           </button>
         </div>
       </div>
+
+      {isConnected && !onCorrectChain && (
+        <p className="text-xs text-yellow-400">
+          Switch to Monad Testnet before posting.
+        </p>
+      )}
 
       {error && (
         <p className="text-xs text-red-400">

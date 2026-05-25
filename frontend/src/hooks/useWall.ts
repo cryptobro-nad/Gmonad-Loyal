@@ -1,12 +1,13 @@
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { GmonadWallABI } from "../abi/GmonadWall";
-import { CONTRACT_ADDRESS } from "../wagmiConfig";
+import { CONTRACT_ADDRESS, monadTestnet } from "../wagmiConfig";
 
 export function useMessageCount() {
   return useReadContract({
     address: CONTRACT_ADDRESS,
     abi: GmonadWallABI,
     functionName: "getMessageCount",
+    chainId: monadTestnet.id,
   });
 }
 
@@ -16,6 +17,7 @@ export function useLatestMessages(limit: number) {
     abi: GmonadWallABI,
     functionName: "getLatestMessages",
     args: [BigInt(limit)],
+    chainId: monadTestnet.id,
   });
 }
 
@@ -26,6 +28,7 @@ export function useCooldownRemaining(address: `0x${string}` | undefined) {
     functionName: "getCooldownRemaining",
     args: address ? [address] : undefined,
     query: { enabled: !!address, refetchInterval: 5000 },
+    chainId: monadTestnet.id,
   });
 }
 
@@ -39,6 +42,7 @@ export function usePostMessage() {
       abi: GmonadWallABI,
       functionName: "postMessage",
       args: [text],
+      chainId: monadTestnet.id,
     });
   }
 

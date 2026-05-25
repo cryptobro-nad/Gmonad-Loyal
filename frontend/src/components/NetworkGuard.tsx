@@ -61,7 +61,7 @@ export function NetworkGuard({ children }: Props) {
 
   if (chainId !== monadTestnet.id) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
+      <div className="flex flex-col items-center gap-4 py-12 text-center max-w-sm mx-auto">
         <div className="text-4xl">⚠️</div>
         <p className="text-gray-300 text-lg">
           Wrong network. Switch to{" "}
@@ -74,7 +74,27 @@ export function NetworkGuard({ children }: Props) {
         >
           {switching ? "Switching…" : "Switch to Monad Testnet"}
         </button>
-        {error && <p className="text-red-400 text-sm max-w-xs">{error}</p>}
+
+        {error && (
+          <div className="w-full flex flex-col gap-3 text-left">
+            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-gray-400 text-sm">
+              Some mobile wallets do not switch custom networks automatically.
+              Add Monad Testnet manually in your wallet, then reconnect.
+            </p>
+            <div className="bg-gray-800 border border-gray-700 rounded-lg p-3 text-xs font-mono space-y-1">
+              <div><span className="text-gray-500">Network Name: </span><span className="text-gray-200">Monad Testnet</span></div>
+              <div><span className="text-gray-500">RPC URL:      </span><span className="text-gray-200">https://testnet-rpc.monad.xyz</span></div>
+              <div><span className="text-gray-500">Chain ID:     </span><span className="text-gray-200">10143</span></div>
+              <div><span className="text-gray-500">Currency:     </span><span className="text-gray-200">MON</span></div>
+              <div><span className="text-gray-500">Explorer:     </span><span className="text-gray-200">https://testnet.monadexplorer.com</span></div>
+            </div>
+          </div>
+        )}
+
+        <p className="text-gray-600 text-xs mt-2">
+          Connected chain: {chainId} · Expected: {monadTestnet.id}
+        </p>
       </div>
     );
   }
