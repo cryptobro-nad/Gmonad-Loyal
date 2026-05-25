@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAccount, useChainId } from "wagmi";
+import { useAccount } from "wagmi";
 import { monadTestnet } from "../wagmiConfig";
 
 const CHAIN_HEX = "0x" + monadTestnet.id.toString(16);
@@ -40,8 +40,7 @@ interface Props {
 }
 
 export function NetworkGuard({ children }: Props) {
-  const { isConnected } = useAccount();
-  const chainId = useChainId();
+  const { isConnected, chainId } = useAccount();
   const [switching, setSwitching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

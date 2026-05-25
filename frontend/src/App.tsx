@@ -35,21 +35,19 @@ export function App() {
 
       {/* Body */}
       <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
+        {/* Post form — gated: hidden and replaced with switch prompt on wrong network */}
         <NetworkGuard>
-          {/* Post form */}
           <section className="bg-gray-900 border border-gray-800 rounded-2xl p-4">
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
               Leave a message
             </h2>
             <MessageInput onPosted={() => setRefreshSignal((n) => n + 1)} />
           </section>
-
-          {/* Stats */}
-          <StatsBar />
-
-          {/* Wall */}
-          <MessageWall refreshSignal={refreshSignal} />
         </NetworkGuard>
+
+        {/* Stats and wall always visible regardless of network */}
+        <StatsBar />
+        <MessageWall refreshSignal={refreshSignal} />
       </main>
     </div>
   );

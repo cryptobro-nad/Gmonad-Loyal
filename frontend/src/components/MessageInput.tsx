@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useAccount, useChainId } from "wagmi";
+import { useAccount } from "wagmi";
 import { useCooldownRemaining, usePostMessage } from "../hooks/useWall";
 import { monadTestnet } from "../wagmiConfig";
 
@@ -21,9 +21,8 @@ interface Props {
 }
 
 export function MessageInput({ onPosted }: Props) {
-  const { address, isConnected } = useAccount();
-  const chainId = useChainId();
-  const onCorrectChain = chainId === monadTestnet.id;
+  const { address, isConnected, chainId: walletChainId } = useAccount();
+  const onCorrectChain = walletChainId === monadTestnet.id;
   const [text, setText] = useState("");
   const bytes = byteLength(text);
   const overLimit = bytes > MAX_BYTES;
@@ -87,7 +86,7 @@ export function MessageInput({ onPosted }: Props) {
             </span>
           )}
           <button
-            onClick={() => post(text)}
+            onClick={() => { if (!onCorrectChain) return; post(text); }}
             disabled={!canSubmit}
             className="px-5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
