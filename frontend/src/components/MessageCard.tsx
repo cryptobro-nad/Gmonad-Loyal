@@ -1,6 +1,10 @@
-export interface WallMessage {
+export interface UnifiedPost {
+  source: "v1" | "v2";
   id: bigint;
+  nadId: bigint | null;
   text: string;
+  mediaURI: string;
+  mediaType: number;
   timestamp: bigint;
   hidden: boolean;
 }
@@ -37,23 +41,26 @@ function timeAgo(unixSeconds: bigint) {
 }
 
 interface Props {
-  message: WallMessage;
+  post: UnifiedPost;
   isNewest?: boolean;
 }
 
-export function MessageCard({ message, isNewest }: Props) {
-  const idx = Number(message.id) % ACCENTS.length;
+export function MessageCard({ post, isNewest }: Props) {
+  const idx = Number(post.id) % ACCENTS.length;
   const accent = ACCENTS[idx];
-  const rotation = ROTATIONS[Number(message.id) % ROTATIONS.length];
+  const rotation = ROTATIONS[Number(post.id) % ROTATIONS.length];
+
+  const label =
+    post.source === "v1"
+      ? `Nad #${post.id.toString()}`
+      : `Nad #${post.nadId?.toString() ?? post.id.toString()}`;
 
   return (
     <div
       className={`relative bg-gray-900 border ${accent.border} rounded-xl p-4 pt-5 flex flex-col gap-2 ${rotation} hover:-translate-y-1 hover:shadow-xl transition-all duration-200`}
     >
       {/* pin dot */}
-      <span
-        className={`absolute -top-2 left-5 w-3 h-3 rounded-full ${accent.pin} ring-2 ring-gray-950`}
-      />
+      <span className={`absolute -top-2 left-5 w-3 h-3 rounded-full ${accent.pin} ring-2 ring-gray-950`} />
 
       {/* NEW badge */}
       {isNewest && (
@@ -62,13 +69,11 @@ export function MessageCard({ message, isNewest }: Props) {
         </span>
       )}
 
-      <p className="text-gray-100 text-sm leading-relaxed break-words">{message.text}</p>
+      <p className="text-gray-100 text-sm leading-relaxed break-words">{post.text}</p>
 
       <div className="flex items-center justify-between text-xs text-gray-500">
-        <span className={`font-mono ${accent.label}`}>
-          Nad #{message.id.toString()}
-        </span>
-        <span>{timeAgo(message.timestamp)}</span>
+        <span className={`font-mono ${accent.label}`}>{label}</span>
+        <span>{timeAgo(post.timestamp)}</span>
       </div>
     </div>
   );

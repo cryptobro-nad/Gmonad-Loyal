@@ -35,5 +35,12 @@ export const wagmiConfig = createConfig({
   },
 });
 
-export const CONTRACT_ADDRESS = import.meta.env
-  .VITE_CONTRACT_ADDRESS as `0x${string}`;
+export const CONTRACT_ADDRESS_V1 = (
+  import.meta.env.VITE_CONTRACT_ADDRESS_V1 ?? import.meta.env.VITE_CONTRACT_ADDRESS
+) as `0x${string}`;
+
+export const CONTRACT_ADDRESS_V2 = import.meta.env
+  .VITE_CONTRACT_ADDRESS_V2 as `0x${string}`;
+
+// Legacy alias — keeps any code that still references CONTRACT_ADDRESS working
+export const CONTRACT_ADDRESS = CONTRACT_ADDRESS_V1;

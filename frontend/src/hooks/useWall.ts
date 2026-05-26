@@ -1,10 +1,13 @@
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { GmonadWallABI } from "../abi/GmonadWall";
-import { CONTRACT_ADDRESS, monadTestnet } from "../wagmiConfig";
+import { GmonadWallV2ABI } from "../abi/GmonadWallV2";
+import { CONTRACT_ADDRESS_V1, CONTRACT_ADDRESS_V2, monadTestnet } from "../wagmiConfig";
+
+// ─── V1 hooks (read-only) ────────────────────────────────────────────────────
 
 export function useMessageCount() {
   return useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: CONTRACT_ADDRESS_V1,
     abi: GmonadWallABI,
     functionName: "getMessageCount",
     chainId: monadTestnet.id,
@@ -13,7 +16,7 @@ export function useMessageCount() {
 
 export function useLatestMessages(limit: number) {
   return useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: CONTRACT_ADDRESS_V1,
     abi: GmonadWallABI,
     functionName: "getLatestMessages",
     args: [BigInt(limit)],
@@ -21,10 +24,31 @@ export function useLatestMessages(limit: number) {
   });
 }
 
-export function useCooldownRemaining(address: `0x${string}` | undefined) {
+// ─── V2 hooks ────────────────────────────────────────────────────────────────
+
+export function usePostCountV2() {
   return useReadContract({
-    address: CONTRACT_ADDRESS,
-    abi: GmonadWallABI,
+    address: CONTRACT_ADDRESS_V2,
+    abi: GmonadWallV2ABI,
+    functionName: "getPostCount",
+    chainId: monadTestnet.id,
+  });
+}
+
+export function useLatestPostsV2(limit: number) {
+  return useReadContract({
+    address: CONTRACT_ADDRESS_V2,
+    abi: GmonadWallV2ABI,
+    functionName: "getLatestPosts",
+    args: [BigInt(limit)],
+    chainId: monadTestnet.id,
+  });
+}
+
+export function useCooldownRemainingV2(address: `0x${string}` | undefined) {
+  return useReadContract({
+    address: CONTRACT_ADDRESS_V2,
+    abi: GmonadWallV2ABI,
     functionName: "getCooldownRemaining",
     args: address ? [address] : undefined,
     query: { enabled: !!address, refetchInterval: 5000 },
@@ -32,14 +56,14 @@ export function useCooldownRemaining(address: `0x${string}` | undefined) {
   });
 }
 
-export function usePostMessage() {
+export function usePostMessageV2() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
   function post(text: string) {
     writeContract({
-      address: CONTRACT_ADDRESS,
-      abi: GmonadWallABI,
+      address: CONTRACT_ADDRESS_V2,
+      abi: GmonadWallV2ABI,
       functionName: "postMessage",
       args: [text],
       chainId: monadTestnet.id,

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useAccount } from "wagmi";
-import { useCooldownRemaining, usePostMessage } from "../hooks/useWall";
+import { useCooldownRemainingV2, usePostMessageV2 } from "../hooks/useWall";
 import { monadTestnet } from "../wagmiConfig";
 
 const MAX_BYTES = 120;
@@ -27,8 +27,8 @@ export function MessageInput({ onPosted }: Props) {
   const bytes = byteLength(text);
   const overLimit = bytes > MAX_BYTES;
 
-  const { data: cooldown, refetch: refetchCooldown } = useCooldownRemaining(address);
-  const { post, hash, isPending, isConfirming, isSuccess, error } = usePostMessage();
+  const { data: cooldown, refetch: refetchCooldown } = useCooldownRemainingV2(address);
+  const { post, hash, isPending, isConfirming, isSuccess, error } = usePostMessageV2();
   const lastHandledHash = useRef<string | undefined>(undefined);
 
   // tick cooldown down every second
