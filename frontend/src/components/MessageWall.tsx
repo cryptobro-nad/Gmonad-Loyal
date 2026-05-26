@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useLatestMessages, useMessageCount } from "../hooks/useWall";
 import { MessageCard, WallMessage } from "./MessageCard";
 
-const FETCH_LIMIT = 25;
+const FETCH_LIMIT = 50;
 
 interface Props {
   refreshSignal: number;
