@@ -3,7 +3,6 @@ import { WalletButton } from "./components/WalletButton";
 import { NetworkGuard } from "./components/NetworkGuard";
 import { MessageInput } from "./components/MessageInput";
 import { MessageWall } from "./components/MessageWall";
-import { StatsBar } from "./components/StatsBar";
 
 export function App() {
   const [refreshSignal, setRefreshSignal] = useState(0);
@@ -18,7 +17,13 @@ export function App() {
             <span className="text-white">Gmonad</span>
             <span className="text-purple-400"> Wall</span>
           </h1>
-          <WalletButton />
+          <div className="flex flex-col items-center gap-1">
+            <WalletButton />
+            <span className="flex items-center gap-1 text-[10px] text-gray-500">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              Monad Testnet
+            </span>
+          </div>
         </div>
         {/* Desktop: centered title, button pinned right */}
         <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center h-24 px-4 md:px-8">
@@ -27,8 +32,12 @@ export function App() {
             <span className="text-white">Gmonad</span>
             <span className="text-purple-400"> Wall</span>
           </h1>
-          <div className="justify-self-end max-w-full">
+          <div className="justify-self-end max-w-full flex flex-col items-end gap-1">
             <WalletButton />
+            <span className="flex items-center gap-1 text-[10px] text-gray-500">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              Monad Testnet
+            </span>
           </div>
         </div>
       </header>
@@ -50,9 +59,8 @@ export function App() {
           </NetworkGuard>
         </div>
 
-        {/* Stats + wall — wide */}
-        <div className="max-w-6xl mx-auto px-4 pb-10 pt-4 flex flex-col gap-4">
-          <StatsBar />
+        {/* Wall — wide */}
+        <div className="max-w-6xl mx-auto px-4 pb-10 pt-4">
           <MessageWall refreshSignal={refreshSignal} />
         </div>
       </div>

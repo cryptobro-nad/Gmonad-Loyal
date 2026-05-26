@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLatestMessages } from "../hooks/useWall";
+import { useLatestMessages, useMessageCount } from "../hooks/useWall";
 import { MessageCard, WallMessage } from "./MessageCard";
 
 const FETCH_LIMIT = 25;
@@ -10,6 +10,7 @@ interface Props {
 
 export function MessageWall({ refreshSignal }: Props) {
   const { data, isLoading, isError, refetch } = useLatestMessages(FETCH_LIMIT);
+  const { data: count } = useMessageCount();
 
   useEffect(() => {
     if (refreshSignal > 0) refetch();
@@ -52,9 +53,11 @@ export function MessageWall({ refreshSignal }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div>
+      <div className="flex items-baseline gap-3">
         <h2 className="text-lg font-bold text-white">Community Wall</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Latest Gmonads from the Monad community.</p>
+        {count !== undefined && (
+          <span className="text-xs text-gray-500">{count.toString()} wall posts</span>
+        )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {messages.map((msg, i) => (
