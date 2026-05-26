@@ -66,7 +66,7 @@ export function MessageCard({ message, isNewest }: Props) {
 
       <div className="flex items-center justify-between text-xs text-gray-500">
         <span className={`font-mono ${accent.label}`}>
-          Anon Monad #{message.id.toString()}
+          Nad #{message.id.toString()}
         </span>
         <span>{timeAgo(message.timestamp)}</span>
       </div>
