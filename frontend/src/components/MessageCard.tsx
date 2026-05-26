@@ -52,7 +52,7 @@ export function MessageCard({ post, isNewest }: Props) {
 
   const label =
     post.source === "v1"
-      ? `Nad #${post.id.toString()}`
+      ? `Post #${post.id.toString()}`
       : `Nad #${post.nadId?.toString() ?? post.id.toString()}`;
 
   return (
