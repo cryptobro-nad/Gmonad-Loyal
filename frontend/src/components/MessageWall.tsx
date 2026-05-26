@@ -54,7 +54,7 @@ export function MessageWall({ refreshSignal }: Props) {
     <div className="flex flex-col gap-4">
       <div>
         <h2 className="text-lg font-bold text-white">Community Wall</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Every message, permanently on Monad.</p>
+        <p className="text-xs text-gray-500 mt-0.5">Latest Gmonads from the Monad community.</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {messages.map((msg, i) => (

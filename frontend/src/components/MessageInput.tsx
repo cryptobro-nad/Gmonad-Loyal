@@ -61,7 +61,7 @@ export function MessageInput({ onPosted }: Props) {
 
   if (!isConnected) {
     return (
-      <p className="text-center text-gray-500 py-6">Connect your wallet to post a message.</p>
+      <p className="text-center text-gray-500 text-sm py-3 md:py-4">Connect your wallet to post a message.</p>
     );
   }
 
@@ -71,8 +71,8 @@ export function MessageInput({ onPosted }: Props) {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Write a short Gmonad message..."
-        rows={3}
-        className="w-full rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 text-white placeholder-gray-500 p-3 resize-none outline-none transition-colors"
+        rows={2}
+        className="w-full rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 text-white placeholder-gray-500 p-3 resize-none outline-none transition-colors min-h-[82px] md:min-h-[105px]"
       />
       <div className="flex items-center justify-between gap-3">
         <span className={`text-xs font-mono ${overLimit ? "text-red-400" : "text-gray-400"}`}>

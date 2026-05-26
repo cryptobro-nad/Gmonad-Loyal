@@ -36,14 +36,14 @@ export function App() {
       {/* Body */}
       <div className="overflow-x-hidden">
         {/* Composer — narrow */}
-        <div className="max-w-2xl mx-auto px-4 pt-6">
+        <div className="max-w-3xl mx-auto px-4 pt-4">
           <NetworkGuard>
-            <section className="bg-gray-900 border border-gray-800 rounded-2xl p-4">
+            <section className="bg-gray-900 border border-gray-800 rounded-2xl p-4 md:p-5">
               <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1">
                 Leave your mark
               </h2>
               <p className="text-xs text-gray-600 mb-3">
-                Your message lives on-chain on Monad forever.
+                Public on Monad testnet. Keep it short and fun.
               </p>
               <MessageInput onPosted={() => setRefreshSignal((n) => n + 1)} />
             </section>
@@ -51,7 +51,7 @@ export function App() {
         </div>
 
         {/* Stats + wall — wide */}
-        <div className="max-w-6xl mx-auto px-4 pb-10 pt-6 flex flex-col gap-6">
+        <div className="max-w-6xl mx-auto px-4 pb-10 pt-4 flex flex-col gap-4">
           <StatsBar />
           <MessageWall refreshSignal={refreshSignal} />
         </div>
