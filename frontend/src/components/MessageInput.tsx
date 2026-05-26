@@ -3,7 +3,7 @@ import { useAccount } from "wagmi";
 import { useCooldownRemainingV2, usePostMessageV2 } from "../hooks/useWall";
 import { monadTestnet } from "../wagmiConfig";
 
-const MAX_BYTES = 120;
+const MAX_BYTES = 240;
 
 function byteLength(str: string) {
   return new TextEncoder().encode(str).length;

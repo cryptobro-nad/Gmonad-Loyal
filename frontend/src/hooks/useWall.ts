@@ -1,4 +1,4 @@
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useReadContract, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { GmonadWallABI } from "../abi/GmonadWall";
 import { GmonadWallV2ABI } from "../abi/GmonadWallV2";
 import { CONTRACT_ADDRESS_V1, CONTRACT_ADDRESS_V2, monadTestnet } from "../wagmiConfig";
@@ -54,6 +54,22 @@ export function useCooldownRemainingV2(address: `0x${string}` | undefined) {
     query: { enabled: !!address, refetchInterval: 5000 },
     chainId: monadTestnet.id,
   });
+}
+
+export function usePostsBeforeV2() {
+  const client = usePublicClient({ chainId: monadTestnet.id });
+
+  async function fetchBefore(beforeId: bigint, limit: number) {
+    if (!client) return null;
+    return client.readContract({
+      address: CONTRACT_ADDRESS_V2,
+      abi: GmonadWallV2ABI,
+      functionName: "getPostsBefore",
+      args: [beforeId, BigInt(limit)],
+    });
+  }
+
+  return { fetchBefore };
 }
 
 export function usePostMessageV2() {
