@@ -6,6 +6,7 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "deploy:testnet": "hardhat run scripts/deploy.ts --network monadTestnet",
+    "deploy:testnet-v2": "hardhat run scripts/deployV2.ts --network monadTestnet",
     "verify:testnet": "hardhat verify --network monadTestnet"
   },
   "devDependencies": {

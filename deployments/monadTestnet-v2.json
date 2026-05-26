@@ -1,0 +1,9 @@
+{
+  "network": "monadTestnet",
+  "chainId": 10143,
+  "contractName": "GmonadWallV2",
+  "contractAddress": "0xEf02A62782301CDF0492698c2E64428ef7956E8f",
+  "deployer": "0x17182Dd862c91F24E83cd74518D841DA125b2c60",
+  "transactionHash": "0x8ec67de58be47092414412ed6a5844fcbd97bedc51b2c18074b7a57e97107d76",
+  "deployedAt": "2026-05-26T21:31:59.516Z"
+}
