@@ -80,15 +80,14 @@ export function App() {
           </>
         )}
 
-        {/* Subtle admin nav */}
-        <div className="text-center pb-6 pt-2">
-          <a
-            href={isAdmin ? "#" : "#admin"}
-            className="text-[10px] text-gray-800 hover:text-gray-600 transition-colors"
-          >
-            {isAdmin ? "← wall" : "admin"}
-          </a>
-        </div>
+        {/* Admin back link — only shown on admin page */}
+        {isAdmin && (
+          <div className="text-center pb-6 pt-2">
+            <a href="#" className="text-[10px] text-gray-700 hover:text-gray-500 transition-colors">
+              ← wall
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
