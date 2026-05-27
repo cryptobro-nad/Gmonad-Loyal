@@ -72,6 +72,32 @@ export function usePostsBeforeV2() {
   return { fetchBefore };
 }
 
+export function useOwnerV2() {
+  return useReadContract({
+    address: CONTRACT_ADDRESS_V2,
+    abi: GmonadWallV2ABI,
+    functionName: "owner",
+    chainId: monadTestnet.id,
+  });
+}
+
+export function useHidePostV2() {
+  const { writeContract, data: hash, isPending, error, reset } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
+
+  function hide(postId: bigint, hidden: boolean) {
+    writeContract({
+      address: CONTRACT_ADDRESS_V2,
+      abi: GmonadWallV2ABI,
+      functionName: "hidePost",
+      args: [postId, hidden],
+      chainId: monadTestnet.id,
+    });
+  }
+
+  return { hide, hash, isPending, isConfirming, isSuccess, error, reset };
+}
+
 export function usePostMessageV2() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
