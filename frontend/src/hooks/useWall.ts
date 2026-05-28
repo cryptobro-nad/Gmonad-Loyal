@@ -72,6 +72,15 @@ export function usePostsBeforeV2() {
   return { fetchBefore };
 }
 
+export function useNadCountV2() {
+  return useReadContract({
+    address: CONTRACT_ADDRESS_V2,
+    abi: GmonadWallV2ABI,
+    functionName: "getNadCount",
+    chainId: monadTestnet.id,
+  });
+}
+
 export function useOwnerV2() {
   return useReadContract({
     address: CONTRACT_ADDRESS_V2,
